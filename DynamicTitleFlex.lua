@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.3",
+  version = "1.0.4",
   author = "@Complicative",
 }
 
@@ -211,8 +211,7 @@ function DynamicTitleFlex.OnPlayerActivated()
 
 
     --Where the fun begins
-    for i = 1, #DynamicTitleFlex.db[zID] - 1 do
-      -- "-1" because last element is the tier
+    for i = 1, #DynamicTitleFlex.db[zID] do
       local aID = DynamicTitleFlex.db[zID][i]
       --aID - Achievement ID
       if (DynamicTitleFlex.CheckForAchievement(aID)) then
