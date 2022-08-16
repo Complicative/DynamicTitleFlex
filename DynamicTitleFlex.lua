@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.2",
+  version = "1.0.3",
   author = "@Complicative",
 }
 
@@ -108,7 +108,7 @@ function DynamicTitleFlex.OnAddOnLoaded(event, addonName) --initialize the addon
     name = "DynamicTitleFlex",
     author = '@Complicative',
     version = DynamicTitleFlex.version,
-    website = "",
+    website = "https://github.com/Complicative/DynamicTitleFlex",
   }
 
   LAM2:RegisterAddonPanel("DynamicTitleFlexOptions", panelData)

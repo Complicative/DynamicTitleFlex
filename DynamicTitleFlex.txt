@@ -1,5 +1,5 @@
 ## Title: DynamicTitleFlex
-## Version: 1.0.2
+## Version: 1.0.3
 ## APIVersion: 101034
 ## IsLibrary: false
 ## SavedVariables: DynamicTitleFlexDB DynamicTitleFlexSettings
