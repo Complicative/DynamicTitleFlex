@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.1",
+  version = "1.0.2",
   author = "@Complicative",
 }
 
@@ -10,6 +10,11 @@ DynamicTitleFlex.Settings = {
   dungeon = true,
   arena = true,
   trial = true,
+  chatOutput = true,
+}
+
+DynamicTitleFlex.tempDB = {
+  --only used for debugging
 }
 
 local LAM2 = LibAddonMenu2
@@ -101,10 +106,9 @@ function DynamicTitleFlex.OnAddOnLoaded(event, addonName) --initialize the addon
   local panelData = {
     type = "panel",
     name = "DynamicTitleFlex",
-    author = 'Complicative',
+    author = '@Complicative',
     version = DynamicTitleFlex.version,
     website = "",
-    slashCommand = "/dyntitleflex"
   }
 
   LAM2:RegisterAddonPanel("DynamicTitleFlexOptions", panelData)
@@ -137,6 +141,13 @@ function DynamicTitleFlex.OnAddOnLoaded(event, addonName) --initialize the addon
     tooltip = "Turning this off, will not change your title when entering Trials",
     getFunc = function() return DynamicTitleFlex.Settings.trial end,
     setFunc = function(value) DynamicTitleFlex.Settings.trial = value end,
+  }
+  optionsData[#optionsData + 1] = {
+    type = "checkbox",
+    name = "Chat Output",
+    tooltip = "Outputs title changes to chat",
+    getFunc = function() return DynamicTitleFlex.Settings.chatOutput end,
+    setFunc = function(value) DynamicTitleFlex.Settings.chatOutput = value end,
   }
   optionsData[#optionsData + 1] = {
     type = "checkbox",
@@ -182,8 +193,12 @@ function DynamicTitleFlex.OnPlayerActivated()
     --For when the addon is being used the first time
     --Default title gets initialized as nil
     DynamicTitleFlex.Settings.defaultTitle = GetUnitTitle("player")
-    CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-      "Saved [" .. GetUnitTitle("player") .. "] as default title" .. cEnd())
+    if DynamicTitleFlex.Settings.chatOutput then
+      local t = DynamicTitleFlex.Settings.defaultTitle
+      if t == "" then t = "No Title" end
+      CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
+        "Saved [" .. t .. "] as default title" .. cEnd())
+    end
   end
 
   local zID = DynamicTitleFlex.GetCurrentZoneId()
@@ -211,10 +226,13 @@ function DynamicTitleFlex.OnPlayerActivated()
               --Checkes, that old title wasn't the same
               DynamicTitleFlex.changedByAddon = true
               --Important to not mess up the default title
-              CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-                "Title set to " ..
-                cStart("00AA00") ..
-                GetTitle(j) .. cStart("FFFFFF") .. " from " .. GetAchievementLink(aID, 1) .. cEnd())
+              if DynamicTitleFlex.Settings.chatOutput then
+                CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
+                  "Title set to " ..
+                  cStart("00AA00") ..
+                  GetTitle(j) .. cStart("FFFFFF") .. " from " .. GetAchievementLink(aID, 1) .. cEnd())
+
+              end
             end
             --Sets the title and breaks out
             SelectTitle(j)
@@ -231,8 +249,13 @@ function DynamicTitleFlex.OnPlayerActivated()
         if DynamicTitleFlex.Settings.defaultTitle ~= GetUnitTitle("player") then
           --Checks, that old title wasn't the same
           DynamicTitleFlex.changedByAddon = true
-          CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-            "Title set back to [" .. GetTitle(i) .. "]" .. cEnd())
+          if DynamicTitleFlex.Settings.chatOutput then
+            local t = DynamicTitleFlex.Settings.defaultTitle
+            if t == "" then t = "No Title" end
+            CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
+              "Title set back to [" .. t .. "]" .. cEnd())
+
+          end
         end
         --Sets the title and breaks out
         SelectTitle(i)
@@ -252,8 +275,12 @@ function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
 
   --If we get here, the title has been most likely changed by the player -> defaultTitle is updated
   DynamicTitleFlex.Settings.defaultTitle = GetUnitTitle("player")
-  CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-    "Default title changed to [" .. DynamicTitleFlex.Settings.defaultTitle .. "]" .. cEnd())
+  if DynamicTitleFlex.Settings.chatOutput then
+    local t = DynamicTitleFlex.Settings.defaultTitle
+    if t == "" then t = "No Title" end
+    CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
+      "Default title changed to [" .. t .. "]" .. cEnd())
+  end
 
 end
 
@@ -273,6 +300,15 @@ EVENT_MANAGER:RegisterForEvent(DynamicTitleFlex.name, EVENT_TITLE_UPDATE,
 ----------------------------------------------
 -- Slash Commands --
 ----------------------------------------------
+
+SLASH_COMMANDS["/dyntitleflex"] = function()
+  local t = DynamicTitleFlex.Settings.defaultTitle
+  if t == "" then t = "No Title" end
+  CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
+    "Default title of DynamicTitleFlex is set to [" .. t .. "]" .. cEnd())
+end
+
+
 SLASH_COMMANDS["/dyntitelflexgetzone"] = function()
   --for debuging only. Print the current Zone ID and Name
   if debug then
