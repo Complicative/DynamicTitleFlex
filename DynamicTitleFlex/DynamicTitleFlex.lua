@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.4",
+  version = "1.0.5",
   author = "@Complicative",
 }
 
@@ -265,6 +265,8 @@ function DynamicTitleFlex.OnPlayerActivated()
 end
 
 function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
+  --If someone in your group changes title, this gets triggered as well
+  if uTag ~= "player" then return end
   --Gets triggered, if players title is changed. Doesn't matter if manually or by an addon
   if DynamicTitleFlex.changedByAddon then DynamicTitleFlex.changedByAddon = false return end
   --If this addon changes the title, changedByAddon is set to true, then gets set to false here
