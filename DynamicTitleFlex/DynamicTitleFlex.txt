@@ -1,6 +1,6 @@
 ## Title: DynamicTitleFlex
-## Version: 1.0.5
-## APIVersion: 101034
+## Version: 1.0.7
+## APIVersion: 101035
 ## IsLibrary: false
 ## SavedVariables: DynamicTitleFlexDB DynamicTitleFlexSettings
 ## DependsOn: LibAddonMenu-2.0

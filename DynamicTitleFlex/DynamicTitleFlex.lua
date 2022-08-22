@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.5",
+  version = "1.0.7",
   author = "@Complicative",
 }
 
@@ -22,6 +22,7 @@ local debug = false
 
 --Used to check, if player changed the title (will be saved as default title) or by this addon (ignored)
 DynamicTitleFlex.changedByAddon = false
+DynamicTitleFlex.latestFlexAchievement = nil
 
 -- /script for i=1,40 do name = GetAchievementCategoryInfo(i) d(i .. " " .. name) end
 -- /script d(GetAchievementName(GetAchievementId((topLevelIndex, nilable categoryIndex, achievementIndex))))
@@ -59,6 +60,8 @@ DynamicTitleFlex.db = {
   [1268] = { 3032, 3028, ["tier"] = 1 }, --The Dread Cellar
   [1301] = { 3111, 3226, 3153, ["tier"] = 1 }, --Coral Aerie
   [1302] = { 3120, 3224, 3154, ["tier"] = 1 }, --Shipwrihts Regret
+  [1306] = { 3381, 3377, 3525, ["tier"] = 1 }, --Earthern Root Enclave
+  [1361] = { 3400, 3396, 3526, ["tier"] = 1 }, --Graven Deep
   [975] = { 1838, 1837, 1836, 1810, 1808, ["tier"] = 3 }, --Halls of Fabrication
   [1051] = { 2139, 2140, 2136, 2133, 2131, ["tier"] = 3 }, --Cloudrest
   [1121] = { 2467, 2466, 2435, 2433, ["tier"] = 3 }, --Sunspire (2468 actually highest, but Godslayer is the one people prefere)
@@ -73,17 +76,11 @@ DynamicTitleFlex.db = {
 --------------------------------------
 
 --Some better looking messages
-local function cStart(hex)
-  return "|c" .. hex
-end
+local function cStart(hex) return "|c" .. hex end
 
-local function cEnd()
-  return "|r"
-end
+local function cEnd() return "|r" end
 
-local function getTimeStamp()
-  return cStart(888888) .. "[" .. os.date('%H:%M:%S') .. "] " .. cEnd()
-end
+local function getTimeStamp() return cStart(888888) .. "[" .. os.date('%H:%M:%S') .. "] " .. cEnd() end
 
 ---------------------------------------------
 -- OnAddOnLoaded --
@@ -176,14 +173,35 @@ end
 
 function DynamicTitleFlex.CheckForAchievement(id)
   --returns true, if player has unlocked the achievement
-  _, _, _, _, c, _, _ = GetAchievementInfo(id)
+  local _, _, _, _, c, _, _ = GetAchievementInfo(id)
   return c
 end
 
 function DynamicTitleFlex.GetTitleNameFromAchievementId(id)
   --returns true, if achievement gives a title
-  _, n = GetAchievementRewardTitle(id)
+  local _, n = GetAchievementRewardTitle(id)
   return n
+end
+
+function DynamicTitleFlex.GetBestAchievement(zID)
+  for i = 1, #DynamicTitleFlex.db[zID] do
+    local aID = DynamicTitleFlex.db[zID][i]
+    --aID - Achievement ID
+    if (DynamicTitleFlex.CheckForAchievement(aID)) then
+      return aID
+    end
+  end
+  return nil
+end
+
+function DynamicTitleFlex.SetTitle(tName)
+  for i = 0, GetNumTitles() do
+    --searches for the title of unlocked achievement
+    if GetTitle(i) == tName then
+      --Sets the title
+      SelectTitle(i)
+    end
+  end
 end
 
 function DynamicTitleFlex.OnPlayerActivated()
@@ -193,12 +211,11 @@ function DynamicTitleFlex.OnPlayerActivated()
     --For when the addon is being used the first time
     --Default title gets initialized as nil
     DynamicTitleFlex.Settings.defaultTitle = GetUnitTitle("player")
-    if DynamicTitleFlex.Settings.chatOutput then
-      local t = DynamicTitleFlex.Settings.defaultTitle
-      if t == "" then t = "No Title" end
-      CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-        "Saved [" .. t .. "] as default title" .. cEnd())
-    end
+    local tName = DynamicTitleFlex.Settings.defaultTitle
+    if tName == "" then tName = "[No Title]" end
+    CHAT_SYSTEM:AddMessage(string.format("%s%sDefault Title set to %s%s", getTimeStamp(),
+      cStart("FFFFFF")
+      , cStart("00AA00"), tName))
   end
 
   local zID = DynamicTitleFlex.GetCurrentZoneId()
@@ -209,56 +226,31 @@ function DynamicTitleFlex.OnPlayerActivated()
     if not DynamicTitleFlex.Settings.arena and DynamicTitleFlex.db[zID]["tier"] == 2 then return end
     if not DynamicTitleFlex.Settings.trial and DynamicTitleFlex.db[zID]["tier"] == 3 then return end
 
+    if DynamicTitleFlex.GetBestAchievement(zID) ~= nil then
+      local aID = DynamicTitleFlex.GetBestAchievement(zID)
+      local tName = DynamicTitleFlex.GetTitleNameFromAchievementId(aID)
+      if tName ~= GetUnitTitle("player") then
+        DynamicTitleFlex.latestFlexAchievement = tName
+        DynamicTitleFlex.SetTitle(tName)
 
-    --Where the fun begins
-    for i = 1, #DynamicTitleFlex.db[zID] do
-      local aID = DynamicTitleFlex.db[zID][i]
-      --aID - Achievement ID
-      if (DynamicTitleFlex.CheckForAchievement(aID)) then
-        --If player has the achievement unlocked
-        local aName = DynamicTitleFlex.GetTitleNameFromAchievementId(aID)
-        --aName - Achievement Name
-        for j = 1, GetNumTitles() do
-          --searches for the title of unlocked achievement
-          if GetTitle(j) == aName then
-            if aName ~= GetUnitTitle("player") then
-              --Checkes, that old title wasn't the same
-              DynamicTitleFlex.changedByAddon = true
-              --Important to not mess up the default title
-              if DynamicTitleFlex.Settings.chatOutput then
-                CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-                  "Title set to " ..
-                  cStart("00AA00") ..
-                  GetTitle(j) .. cStart("FFFFFF") .. " from " .. GetAchievementLink(aID, 1) .. cEnd())
-
-              end
-            end
-            --Sets the title and breaks out
-            SelectTitle(j)
-            return
-          end
+        --Chat Output
+        if DynamicTitleFlex.Settings.chatOutput then
+          CHAT_SYSTEM:AddMessage(string.format("%s%sTitle set to %s%s%s from %s%s", getTimeStamp(),
+            cStart("FFFFFF"), cStart("00AA00"), tName, cStart("FFFFFF"), GetAchievementLink(aID, 1), cEnd()))
         end
       end
     end
   else
-    for i = 0, GetNumTitles() do
-      --Gets triggered if zone has no data in the db (Not an instance)
-      if GetTitle(i) == DynamicTitleFlex.Settings.defaultTitle then
-        --Searches for the default Title
-        if DynamicTitleFlex.Settings.defaultTitle ~= GetUnitTitle("player") then
-          --Checks, that old title wasn't the same
-          DynamicTitleFlex.changedByAddon = true
-          if DynamicTitleFlex.Settings.chatOutput then
-            local t = DynamicTitleFlex.Settings.defaultTitle
-            if t == "" then t = "No Title" end
-            CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-              "Title set back to [" .. t .. "]" .. cEnd())
+    if GetUnitTitle("player") ~= DynamicTitleFlex.Settings.defaultTitle then
+      DynamicTitleFlex.SetTitle(DynamicTitleFlex.Settings.defaultTitle)
 
-          end
-        end
-        --Sets the title and breaks out
-        SelectTitle(i)
-        return
+      --Chat output
+      if DynamicTitleFlex.Settings.chatOutput then
+        local tName = DynamicTitleFlex.Settings.defaultTitle
+        if tName == "" then tName = "[No Title]" end
+        CHAT_SYSTEM:AddMessage(string.format("%s%sTitle set back to %s%s", getTimeStamp(),
+          cStart("FFFFFF")
+          , cStart("00AA00"), tName))
       end
     end
   end
@@ -266,21 +258,42 @@ end
 
 function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
   --If someone in your group changes title, this gets triggered as well
-  if uTag ~= "player" then return end
-  --Gets triggered, if players title is changed. Doesn't matter if manually or by an addon
-  if DynamicTitleFlex.changedByAddon then DynamicTitleFlex.changedByAddon = false return end
-  --If this addon changes the title, changedByAddon is set to true, then gets set to false here
-  if DynamicTitleFlex.Settings.defaultTitle == nil then return end
-  --I have put the inital set up of the default title in the onPlayerActivated
-  --OnTitleUpdated gets called earlier, so we ignore this case here
+  local newTitle = GetUnitTitle("player")
 
-  --If we get here, the title has been most likely changed by the player -> defaultTitle is updated
-  DynamicTitleFlex.Settings.defaultTitle = GetUnitTitle("player")
-  if DynamicTitleFlex.Settings.chatOutput then
-    local t = DynamicTitleFlex.Settings.defaultTitle
-    if t == "" then t = "No Title" end
-    CHAT_SYSTEM:AddMessage(getTimeStamp() .. cStart("FFFFFF") ..
-      "Default title changed to [" .. t .. "]" .. cEnd())
+
+  if uTag ~= "player" then return end
+  if DynamicTitleFlex.Settings.defaultTitle == newTitle then return end
+  if DynamicTitleFlex.Settings.defaultTitle == nil then return end
+  if newTitle == DynamicTitleFlex.latestFlexAchievement then return end --this addon changed the title if this gets triggered
+
+
+  local zID = DynamicTitleFlex.GetCurrentZoneId()
+  if (DynamicTitleFlex.db[zID] ~= nil) then --in an instance
+
+    local aID = DynamicTitleFlex.GetBestAchievement(zID)
+    local aName = DynamicTitleFlex.GetTitleNameFromAchievementId(aID) --Getting the best achievement in zone
+    if newTitle == aName then return end -- If newTitle is the best achievemnet in this instance
+
+
+    DynamicTitleFlex.Settings.defaultTitle = newTitle --If we get here, the title should have been changed by the user
+    if newTitle == "" then newTitle = "[No Title]"
+    end
+    CHAT_SYSTEM:AddMessage(string.format("%s%sDefault Title set to %s%s", getTimeStamp(),
+      cStart("FFFFFF")
+      , cStart("00AA00"), newTitle))
+
+  else
+    DynamicTitleFlex.Settings.defaultTitle = newTitle
+    DynamicTitleFlex.latestFlexAchievement = nil
+
+    --Chat output
+    if DynamicTitleFlex.Settings.chatOutput then
+      if newTitle == "" then newTitle = "[No Title]"
+      end
+      CHAT_SYSTEM:AddMessage(string.format("%s%sDefault Title set to %s%s", getTimeStamp(),
+        cStart("FFFFFF")
+        , cStart("00AA00"), newTitle))
+    end
   end
 
 end
