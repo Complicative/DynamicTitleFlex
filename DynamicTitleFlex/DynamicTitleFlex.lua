@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.7",
+  version = "1.0.9",
   author = "@Complicative",
 }
 
@@ -11,6 +11,7 @@ DynamicTitleFlex.Settings = {
   arena = true,
   trial = true,
   chatOutput = true,
+  latestFlexAchievement = nil,
 }
 
 DynamicTitleFlex.tempDB = {
@@ -20,9 +21,6 @@ DynamicTitleFlex.tempDB = {
 local LAM2 = LibAddonMenu2
 local debug = false
 
---Used to check, if player changed the title (will be saved as default title) or by this addon (ignored)
-DynamicTitleFlex.changedByAddon = false
-DynamicTitleFlex.latestFlexAchievement = nil
 
 -- /script for i=1,40 do name = GetAchievementCategoryInfo(i) d(i .. " " .. name) end
 -- /script d(GetAchievementName(GetAchievementId((topLevelIndex, nilable categoryIndex, achievementIndex))))
@@ -60,7 +58,7 @@ DynamicTitleFlex.db = {
   [1268] = { 3032, 3028, ["tier"] = 1 }, --The Dread Cellar
   [1301] = { 3111, 3226, 3153, ["tier"] = 1 }, --Coral Aerie
   [1302] = { 3120, 3224, 3154, ["tier"] = 1 }, --Shipwrihts Regret
-  [1306] = { 3381, 3377, 3525, ["tier"] = 1 }, --Earthern Root Enclave
+  [1360] = { 3381, 3377, 3525, ["tier"] = 1 }, --Earthern Root Enclave
   [1361] = { 3400, 3396, 3526, ["tier"] = 1 }, --Graven Deep
   [975] = { 1838, 1837, 1836, 1810, 1808, ["tier"] = 3 }, --Halls of Fabrication
   [1051] = { 2139, 2140, 2136, 2133, 2131, ["tier"] = 3 }, --Cloudrest
@@ -205,7 +203,6 @@ function DynamicTitleFlex.SetTitle(tName)
 end
 
 function DynamicTitleFlex.OnPlayerActivated()
-
   --Triggered when UI reappears (after porting but also after UI reload)
   if DynamicTitleFlex.Settings.defaultTitle == nil then
     --For when the addon is being used the first time
@@ -230,7 +227,7 @@ function DynamicTitleFlex.OnPlayerActivated()
       local aID = DynamicTitleFlex.GetBestAchievement(zID)
       local tName = DynamicTitleFlex.GetTitleNameFromAchievementId(aID)
       if tName ~= GetUnitTitle("player") then
-        DynamicTitleFlex.latestFlexAchievement = tName
+        DynamicTitleFlex.Settings.latestFlexAchievement = tName
         DynamicTitleFlex.SetTitle(tName)
 
         --Chat Output
@@ -264,7 +261,7 @@ function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
   if uTag ~= "player" then return end
   if DynamicTitleFlex.Settings.defaultTitle == newTitle then return end
   if DynamicTitleFlex.Settings.defaultTitle == nil then return end
-  if newTitle == DynamicTitleFlex.latestFlexAchievement then return end --this addon changed the title if this gets triggered
+  if newTitle == DynamicTitleFlex.Settings.latestFlexAchievement then return end --this addon changed the title if this gets triggered
 
 
   local zID = DynamicTitleFlex.GetCurrentZoneId()
@@ -284,7 +281,7 @@ function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
 
   else
     DynamicTitleFlex.Settings.defaultTitle = newTitle
-    DynamicTitleFlex.latestFlexAchievement = nil
+    DynamicTitleFlex.Settings.latestFlexAchievement = nil
 
     --Chat output
     if DynamicTitleFlex.Settings.chatOutput then
@@ -323,7 +320,7 @@ SLASH_COMMANDS["/dyntitleflex"] = function()
 end
 
 
-SLASH_COMMANDS["/dyntitelflexgetzone"] = function()
+SLASH_COMMANDS["/dyntitleflexgetzone"] = function()
   --for debuging only. Print the current Zone ID and Name
   if debug then
     CHAT_SYSTEM:AddMessage(getTimeStamp() .. "-------------------")
