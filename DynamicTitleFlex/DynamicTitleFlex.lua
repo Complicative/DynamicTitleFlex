@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.9",
+  version = "1.0.10",
   author = "@Complicative",
 }
 
@@ -31,45 +31,49 @@ DynamicTitleFlex.db = {
   --1 - Dungeon
   --2 - Arena
   --3 - Trial
-  [677] = { 1330, 1305, 1304, ["tier"] = 2 }, --Maelstrom
-  [725] = { 1391, ["tier"] = 3 }, --Maw of Lorkhaj
-  [848] = { 1538, ["tier"] = 1 }, --Cradle of Shadows
-  [843] = { 1538, ["tier"] = 1 }, --Ruins of Mazzatun
-  [973] = { 1696, 1691, ["tier"] = 1 }, --Bloodroot Forge
-  [974] = { 1704, 1699, ["tier"] = 1 }, --Falkreath Hold
-  [1000] = { 2075, 2087, 2079, 2077, 2076, ["tier"] = 3 }, --Asylum Sanctorium
-  [1010] = { 1981, 1976, ["tier"] = 1 }, --Scalecaller Peak
-  [1009] = { 1965, 1960, ["tier"] = 1 }, --Fang Lair
-  [1055] = { 2164, 2163, ["tier"] = 1 }, --March of Sacrifices
-  [1052] = { 2154, 2153, ["tier"] = 1 }, --Moonhunter Keep
-  [1082] = { 2368, 2363, 2362, ["tier"] = 2 }, --Blackrose Prison
-  [1080] = { 2266, ["tier"] = 1 }, --Frostvault
-  [1081] = { 2275, ["tier"] = 1 }, --Depths of Malatar
-  [1122] = { 2421, 2417, ["tier"] = 1 }, --Moongrave Fane
-  [1123] = { 2430, 2427, ["tier"] = 1 }, --Lair of Maarselook
-  [1153] = { 2555, 2551, ["tier"] = 1 }, --Unhallowed Grave
-  [1152] = { 2546, 2541, ["tier"] = 1 }, --Icereach
-  [1197] = { 2701, 2755, ["tier"] = 1 }, --Stone Garden
-  [1201] = { 2710, 2706, ["tier"] = 1 }, --Castle Thorn
-  [1227] = { 2912, 2913, 2908, ["tier"] = 2 }, --Vateshran Hollows
-  [1228] = { 2838, 2833, ["tier"] = 1 }, --Black Drake Villa
-  [1229] = { 2847, 2843, ["tier"] = 1 }, --The Cauldron
-  [1267] = { 3023, 3018, ["tier"] = 1 }, --Red Pettal Bastion
-  [1268] = { 3032, 3028, ["tier"] = 1 }, --The Dread Cellar
-  [1301] = { 3111, 3226, 3153, ["tier"] = 1 }, --Coral Aerie
-  [1302] = { 3120, 3224, 3154, ["tier"] = 1 }, --Shipwrihts Regret
-  [1360] = { 3381, 3377, 3525, ["tier"] = 1 }, --Earthern Root Enclave
-  [1361] = { 3400, 3396, 3526, ["tier"] = 1 }, --Graven Deep
-  [975] = { 1838, 1837, 1836, 1810, 1808, ["tier"] = 3 }, --Halls of Fabrication
-  [1051] = { 2139, 2140, 2136, 2133, 2131, ["tier"] = 3 }, --Cloudrest
-  [1121] = { 2467, 2466, 2435, 2433, ["tier"] = 3 }, --Sunspire (2468 actually highest, but Godslayer is the one people prefere)
-  [1196] = { 2746, 2740, 2739, 2734, 2732, ["tier"] = 3 }, --Kyne's Aegis
-  [1263] = { 3003, 3007, 2987, 2985, ["tier"] = 3 }, --Rockgrove (3004 actually highest, but Planesbreaker is the one people prefere)
-  [1344] = { 3249, 3248, 3252, 3244, 3242, ["tier"] = 3 }, --Dreadsail Reef
-  [635] = { 992, 1140, ["tier"] = 2 }, --Dragonstar Arena
-  [636] = { 1474, ["tier"] = 3 }, --Hel Ra Citadel
-  [638] = { 1503, ["tier"] = 3 }, --Aetherian Archive
-  [639] = { 1462, ["tier"] = 3 }, --Sanctum Ophidia
+
+
+  [848] = { 1538,["tier"] = 1 },                          --Cradle of Shadows
+  [843] = { 1538,["tier"] = 1 },                          --Ruins of Mazzatun
+  [973] = { 1696, 1691,["tier"] = 1 },                    --Bloodroot Forge
+  [974] = { 1704, 1699,["tier"] = 1 },                    --Falkreath Hold
+  [1010] = { 1981, 1976,["tier"] = 1 },                   --Scalecaller Peak
+  [1009] = { 1965, 1960,["tier"] = 1 },                   --Fang Lair
+  [1055] = { 2164, 2163,["tier"] = 1 },                   --March of Sacrifices
+  [1052] = { 2154, 2153,["tier"] = 1 },                   --Moonhunter Keep
+  [1080] = { 2266,["tier"] = 1 },                         --Frostvault
+  [1081] = { 2275,["tier"] = 1 },                         --Depths of Malatar
+  [1122] = { 2421, 2417,["tier"] = 1 },                   --Moongrave Fane
+  [1123] = { 2430, 2427,["tier"] = 1 },                   --Lair of Maarselook
+  [1153] = { 2555, 2551,["tier"] = 1 },                   --Unhallowed Grave
+  [1152] = { 2546, 2541,["tier"] = 1 },                   --Icereach
+  [1197] = { 2701, 2755,["tier"] = 1 },                   --Stone Garden
+  [1201] = { 2710, 2706,["tier"] = 1 },                   --Castle Thorn
+  [1228] = { 2838, 2833,["tier"] = 1 },                   --Black Drake Villa
+  [1229] = { 2847, 2843,["tier"] = 1 },                   --The Cauldron
+  [1267] = { 3023, 3018,["tier"] = 1 },                   --Red Pettal Bastion
+  [1268] = { 3032, 3028,["tier"] = 1 },                   --The Dread Cellar
+  [1301] = { 3111, 3226, 3153,["tier"] = 1 },             --Coral Aerie
+  [1302] = { 3120, 3224, 3154,["tier"] = 1 },             --Shipwrihts Regret
+  [1360] = { 3381, 3377, 3525,["tier"] = 1 },             --Earthern Root Enclave
+  [1361] = { 3400, 3396, 3526,["tier"] = 1 },             --Graven Deep
+  [1389] = { 3474, 3470, 3617,["tier"] = 1 },             --Bal Sunnar
+  [1390] = { 3535, 3531, 3618,["tier"] = 1 },             --Scriveners Hall
+  [975] = { 1838, 1837, 1836, 1810, 1808,["tier"] = 3 },  --Halls of Fabrication
+  [1000] = { 2075, 2087, 2079, 2077, 2076,["tier"] = 3 }, --Asylum Sanctorium
+  [1051] = { 2139, 2140, 2136, 2133, 2131,["tier"] = 3 }, --Cloudrest
+  [1121] = { 2467, 2466, 2435, 2433,["tier"] = 3 },       --Sunspire (2468 actually highest, but Godslayer is the one people prefere)
+  [1196] = { 2746, 2740, 2739, 2734, 2732,["tier"] = 3 }, --Kyne's Aegis
+  [1263] = { 3003, 3007, 2987, 2985,["tier"] = 3 },       --Rockgrove (3004 actually highest, but Planesbreaker is the one people prefere)
+  [1344] = { 3249, 3248, 3252, 3244, 3242,["tier"] = 3 }, --Dreadsail Reef
+  [677] = { 1330, 1305, 1304,["tier"] = 2 },              --Maelstrom
+  [1227] = { 2912, 2913, 2908,["tier"] = 2 },             --Vateshran Hollows
+  [635] = { 992, 1140,["tier"] = 2 },                     --Dragonstar Arena
+  [1082] = { 2368, 2363, 2362,["tier"] = 2 },             --Blackrose Prison
+  [636] = { 1474,["tier"] = 3 },                          --Hel Ra Citadel
+  [638] = { 1503,["tier"] = 3 },                          --Aetherian Archive
+  [639] = { 1462,["tier"] = 3 },                          --Sanctum Ophidia
+  [725] = { 1391,["tier"] = 3 },                          --Maw of Lorkhaj
 }
 --------------------------------------
 
@@ -265,34 +269,33 @@ function DynamicTitleFlex.OnTitleUpdated(eventCode, uTag)
 
 
   local zID = DynamicTitleFlex.GetCurrentZoneId()
-  if (DynamicTitleFlex.db[zID] ~= nil) then --in an instance
-
+  if (DynamicTitleFlex.db[zID] ~= nil) then                           --in an instance
     local aID = DynamicTitleFlex.GetBestAchievement(zID)
     local aName = DynamicTitleFlex.GetTitleNameFromAchievementId(aID) --Getting the best achievement in zone
-    if newTitle == aName then return end -- If newTitle is the best achievemnet in this instance
+    if newTitle == aName then return end                              -- If newTitle is the best achievemnet in this instance
 
 
     DynamicTitleFlex.Settings.defaultTitle = newTitle --If we get here, the title should have been changed by the user
-    if newTitle == "" then newTitle = "[No Title]"
+    if newTitle == "" then
+      newTitle = "[No Title]"
     end
     CHAT_SYSTEM:AddMessage(string.format("%s%sDefault Title set to %s%s", getTimeStamp(),
       cStart("FFFFFF")
       , cStart("00AA00"), newTitle))
-
   else
     DynamicTitleFlex.Settings.defaultTitle = newTitle
     DynamicTitleFlex.Settings.latestFlexAchievement = nil
 
     --Chat output
     if DynamicTitleFlex.Settings.chatOutput then
-      if newTitle == "" then newTitle = "[No Title]"
+      if newTitle == "" then
+        newTitle = "[No Title]"
       end
       CHAT_SYSTEM:AddMessage(string.format("%s%sDefault Title set to %s%s", getTimeStamp(),
         cStart("FFFFFF")
         , cStart("00AA00"), newTitle))
     end
   end
-
 end
 
 ----------------------------------------------
@@ -332,7 +335,6 @@ end
 
 
 SLASH_COMMANDS["/saveachiev"] = function()
-
   --For debugging only! Creates a saved var with ALL achievements, that have a title reward and their ID
   if debug then
     DynamicTitleFlex.tempDB.iDB = {}
@@ -396,9 +398,11 @@ SLASH_COMMANDS["/saveachiev"] = function()
 
             local _, tit = GetAchievementRewardTitle(GetAchievementId(i, j, k))
             -- tit - titleName
-            local elem = { ["name"] = GetAchievementName(GetAchievementId(i, j, k)),
+            local elem = {
+              ["name"] = GetAchievementName(GetAchievementId(i, j, k)),
               ["id"] = GetAchievementId(i, j, k),
-              ["title"] = tit }
+              ["title"] = tit
+            }
 
             if DynamicTitleFlex.tempDB.iDB[n] == nil then
               --if there is no data for the category yet
@@ -406,7 +410,6 @@ SLASH_COMMANDS["/saveachiev"] = function()
             end
             --adds the achievements
             table.insert(DynamicTitleFlex.tempDB.iDB[n][sn], elem)
-
           end
         end
         --if we set j to nil, we need to set it back to 0, so it can be incrememented
@@ -420,7 +423,6 @@ SLASH_COMMANDS["/saveachiev"] = function()
 
     d(getTimeStamp() .. "TempDB updated")
   end
-
 end
 
 -- /script for i=1,40 do name = GetAchievementCategoryInfo(i) d(i .. " " .. name) end
