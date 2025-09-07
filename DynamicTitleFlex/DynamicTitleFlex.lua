@@ -59,6 +59,13 @@ DynamicTitleFlex.db = {
   [1361] = { 3400, 3396, 3526,["tier"] = 1 },             --Graven Deep
   [1389] = { 3474, 3470, 3617,["tier"] = 1 },             --Bal Sunnar
   [1390] = { 3535, 3531, 3618,["tier"] = 1 },             --Scriveners Hall
+  [1470] = { 3816, 3812, 4009,["tier"] = 1 },             --Oathsworn Pit
+  [1471] = { 3857, 3853, 4010,["tier"] = 1 },             --Bedlam Veil
+  [1496] = { 4115, 4111, 4295,["tier"] = 1 },             --Exiled Redoubt
+  [1497] = { 4134, 4130, 4296,["tier"] = 1 },             --Lep Seclusa
+  [1551] = { 4317, 4313, 4328,["tier"] = 1 },             --Naj-Caldeesh
+  [1552] = { 4340, 4336, 4351,["tier"] = 1 },             --Black Gem Foundry
+
   [975] = { 1838, 1837, 1836, 1810, 1808,["tier"] = 3 },  --Halls of Fabrication
   [1000] = { 2075, 2087, 2079, 2077, 2076,["tier"] = 3 }, --Asylum Sanctorium
   [1051] = { 2139, 2140, 2136, 2133, 2131,["tier"] = 3 }, --Cloudrest
@@ -74,6 +81,9 @@ DynamicTitleFlex.db = {
   [638] = { 1503,["tier"] = 3 },                          --Aetherian Archive
   [639] = { 1462,["tier"] = 3 },                          --Sanctum Ophidia
   [725] = { 1391,["tier"] = 3 },                          --Maw of Lorkhaj
+  [1427] = { 3565, 3564, 3568, 3560, 3558,["tier"] = 3 }, --Sanity's Edge
+  [1478] = { 4019, 4023, 4015, 4013,["tier"] = 3 },       --Lucent Citadel
+  [1548] = { 4273, 4272, 4276, 4268, 4266,["tier"] = 3 }, --Ossein Cage
 }
 --------------------------------------
 
