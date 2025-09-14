@@ -1,6 +1,6 @@
 DynamicTitleFlex = {
   name = "DynamicTitleFlex",
-  version = "1.0.10",
+  version = "1.0.11",
   author = "@Complicative",
 }
 
